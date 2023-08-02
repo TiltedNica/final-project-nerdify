@@ -1,47 +1,114 @@
 <script setup>
-import {toRefs, reactive} from "vue";
-import {Link, router} from "@inertiajs/vue3";
+import {toRefs, reactive, computed} from "vue";
+import {Link, router, usePage} from "@inertiajs/vue3";
 import {useGeneralStore} from "@/stores/general.js";
 import ProfilePicture from "@/Components/ProfilePicture.vue";
+import {c} from "../../../public/build/assets/app-3d4439b8.js";
 
 const form = reactive({
     comment:null
 })
-//
-// const props = defineProps({
-//     user: Object,
-//     post: Object,
-//     comments: Object
-// })
+
+const props = defineProps({
+    user: Object,
+    post: Object,
+    comments: Object
+})
+
+const userAuth = usePage().props.auth.user
+
+console.log(props.user)
+
+console.log(props.post.id)
+
+const createComment = () =>{
+    router.post('/comment', {
+        post_id: props.post.id,
+        text: form.comment
+    },
+        {
+            preserveScroll: true
+        }
+    )
+}
+
+const isHeartActiveComputed = computed(() => {
+    let isTrue = false
+
+    for (let i = 0; i < props.post.likes.length; i++) {
+        const like = props.post.likes[i];
+        if (like.user_id === userAuth.id && like.post_id === props.post.id) {
+            isTrue = true
+        }
+    }
+
+    return isTrue
+})
+
+const createLike = () => {
+    let deleteLike = false
+    let id = null
+
+    for (let i = 0; i < props.post.likes.length; i++) {
+        const like = props.post.likes[i];
+        if (like.user_id === userAuth.id && like.post_id === props.post.id) {
+            deleteLike=true
+            id = like.id
+        }
+    }
+
+    if (deleteLike) {
+        router.delete('/likes/' + id, {
+            preserveScroll: true
+        })
+    } else {
+        router.post('/likes', {
+                post_id: props.post.id,
+            },
+            {
+                preserveScroll: true
+            }
+        )
+    }
+
+
+
+}
+
+const isUser = () =>{
+    router.get('/user/' + user.value.id)
+}
 
 </script>
 <template>
     <div id="CreatePostBox" class="w-[625px] p-5 bg-white rounded-t-2xl mt-3 border-b-2">
         <div class="flex justify-between">
             <div class="flex items-center gap-x-2.5">
-                <profile-picture></profile-picture>
+                <profile-picture :image="user.image"></profile-picture>
                 <div>
-                    <h3 class="text-[#171725] font-semibold">Ahmad Nur Fawaid</h3>
-                    <div class="text-[#92929D] text-[12px] font-normal">12 April at 09:28 PM</div>
+                    <h3 class="text-[#171725] font-semibold">{{ user.name }}</h3>
+                    <div class="text-[#92929D] text-[12px] font-normal">{{ post.created_at }}</div>
                 </div>
             </div>
             <img class="self-start bg-[#F1F1F5] px-1 h-fit rounded-md" src="/img/ic_More.svg" alt="">
         </div>
         <p class="mt-5 text-[#44444F] text-[14px] leading-6">
-            One of the perks of working in an international company is sharing knowledge with your colleagues.
+            {{post.text}}
         </p>
-        <div class="grid grid-cols-2 gap-x-3.5 border-b-2 pb-5 mt-5">
-            <img class="w-[285px]  h-[330px] object-cover rounded-2xl" src="/img/316a30da56abfe568bbbda57e61363b0dc53a2cdr1-313-313v2_00.jpg" alt="">
-            <img class="w-[285px  h-[330px] object-cover rounded-2xl" src="/img/4363d31f48315ee194af588e55e84d54fed169adr1-1515-981v2_hq.jpg">
+        <div v-if="post.image" class="grid grid-cols-2 gap-x-3.5 border-b-2 pb-5 mt-5">
+            <img class="w-[285px]  h-[330px] object-cover rounded-2xl" :src="post.image" alt="">
         </div>
         <div class="flex items-center gap-x-12 mt-5">
             <div class="flex gap-x-2.5">
                 <img src="/img/ic_comment.svg" alt="">
-                <h3 class="text-[#44444F] text-[14px] leading-6">25 Comments</h3>
+                <h3 class="text-[#44444F] text-[14px] leading-6">{{ comments.length }} Comments</h3>
             </div>
             <div class="flex gap-x-2.5">
-                <img src="/img/ic_like.svg" alt="">
-                <h3 class="text-[#44444F] text-[14px] leading-6">120K Likes</h3>
+                <button @click="createLike">
+                    <img v-if="!isHeartActiveComputed" src="/img/ic_like.svg" class="h-6 w-6" alt="">
+                    <img v-else src="/img/heart-solid.svg" class="h-6 w-6" alt="">
+                </button>
+                <h3 class="text-[#44444F] text-[14px] leading-6">{{post.likes.length}} Likes</h3>
             </div>
             <div class="flex gap-x-2.5">
                 <img src="/img/ic_Saved.svg" alt="">
@@ -50,16 +117,16 @@ const form = reactive({
         </div>
     </div>
     <div class="w-[625px] p-5 bg-white rounded-b-2xl border-b-2 flex gap-x-2.5 flex-col gap-y-2.5" >
-        <div class="flex items-center gap-x-2.5">
-            <profile-picture></profile-picture>
-            <div class="bg-[#FAFAFB] p-2.5 rounded-2xl text-[14px] text-[#92929D]">This is a test comment</div>
+        <div v-for="comment in comments" :key="comment" class="flex items-center gap-x-2.5">
+            <profile-picture :image="user.image"></profile-picture>
+            <div class="bg-[#FAFAFB] p-2.5 rounded-2xl text-[14px] text-[#92929D]">{{ comment.text }}</div>
         </div>
         <div class="flex items-center gap-x-2.5">
-            <profile-picture></profile-picture>
-            <div class="flex relative w-full">
-                <input type="text" placeholder="Write Your Comment" class="bg-[#FAFAFB] placeholder-[#92929D] placeholder: leading-6 placeholder:text-[14px] border-none rounded-2xl w-full">
-                <img class="absolute mt-2.5 right-2.5 cursor-pointer" src="/img/ic_Image.svg" alt="">
-            </div>
+            <profile-picture :image="user.image"></profile-picture>
+            <form action="" @submit.prevent="createComment" class="flex relative w-full">
+                    <input v-model="form.comment" type="text" placeholder="Write Your Comment" class="bg-[#FAFAFB] placeholder-[#92929D] placeholder: leading-6 placeholder:text-[14px] border-none rounded-2xl w-full">
+                    <img class="absolute mt-2.5 right-2.5 cursor-pointer" src="/img/ic_Image.svg" alt="">
+            </form>
         </div>
     </div>
 </template>

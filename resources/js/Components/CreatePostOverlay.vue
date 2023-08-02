@@ -30,6 +30,26 @@ const clearImage = () =>{
 const resetScroll = () =>{
     document.body.classList.remove('overflow-hidden')
 }
+
+const createPost = () => {
+    router.post('/post', form, {
+        forceFormData: true,
+        onError: errors => {
+            errors && errors.text ? errors.value = errors.text: ''
+            errors && errors.text ? errors.value = errors.image: ''
+        },
+        onSuccess: ()=>{
+          form.text = null,
+          form.image = null
+          useGeneral.isPostOverlay = false;
+        }
+    },
+        {
+            preserveScroll:true
+        },
+        resetScroll()
+    )
+}
 </script>
 
 <template>
@@ -41,9 +61,9 @@ const resetScroll = () =>{
             </div>
             <form @submit.prevent class="p-4 max-h-[600px] overflow-y-scroll">
                 <div class="flex items-center border-b-2">
-                    <profile-picture></profile-picture>
+                    <profile-picture :image="user.image"></profile-picture>
                     <div class="w-full">
-                        <textarea v-model="form.text" class="resize-none rounded-2xl w-full border-none placeholder: text-[##92929D] placeholder:text-[18px]" placeholder="Whats on your mind?" type="text"/>
+                        <textarea v-model="form.text" class="resize-none rounded-2xl w-full border-none placeholder: text-[##92929D] placeholder:text-[18px]" :placeholder="'Whats on your mind ' + user.name + '?'"  type="text"/>
                     </div>
                 </div>
                 <div v-if="form.image" class="relative">
@@ -55,7 +75,7 @@ const resetScroll = () =>{
                         <img src="/img/ic_Image.svg" alt="">
                     </label>
                     <input id="image" type="file" class="hidden" @input="getUploadedImage($event)">
-                    <input class="cursor-pointer bg-[#0062FF] rounded-2xl text-white px-8 py-3" type="submit" value="Share Post">
+                    <input @click="createPost" class="cursor-pointer bg-[#0062FF] rounded-2xl text-white px-8 py-3" type="submit" value="Share Post">
                 </div>
             </form>
         </div>

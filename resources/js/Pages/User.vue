@@ -1,5 +1,5 @@
 <script setup>
-import {Link, Head} from "@inertiajs/vue3";
+import {Link, Head, usePage} from "@inertiajs/vue3";
 import MainNavLayout from "@/Layouts/MainNavLayout.vue";
 import CreatePostBox from "@/Components/CreatePostBox.vue";
 import Post from "@/Components/Post.vue";
@@ -15,6 +15,13 @@ import Photos from "@/Components/Photos.vue";
 
 const useGeneral = useGeneralStore()
 
+defineProps({
+    posts: Object,
+    user: Object
+})
+
+const user = usePage().props.auth.user
+
 </script>
 
 <template>
@@ -26,10 +33,12 @@ const useGeneral = useGeneralStore()
                 <div class="w-[990px]">
                     <div class="relative w-full">
                         <img src="/img/Cover.png" alt="">
-                        <h2 class="left-[221px] top-[183px] absolute text-2xl text-white font-semibold">Ahmad Nur Fawaid</h2>
-                        <h4 class="left-[220px] absolute top-[214px] text-[#D5D5DC] text-base font-normal leading-6">@fawaid</h4>
+                        <h2 class="left-[221px] top-[183px] absolute text-2xl text-white font-semibold">{{
+                                user.name
+                            }}</h2>
+                        <h4 class="left-[220px] absolute top-[214px] text-[#D5D5DC] text-base font-normal leading-6">@{{user.username}}</h4>
                         <button class="absolute top-5 right-5 py-2.5 px-3.5 bg-[#17172580] rounded-2xl border-white border-2 text-white">Edit Profile</button>
-                        <profile-picture-user class="absolute top-[138px] left-8"></profile-picture-user>
+                        <profile-picture-user :image="user.image"  class="absolute top-[138px] left-8"></profile-picture-user>
                     </div>
                     <div class="bg-white w-full rounded-b-2xl">
                         <div class="flex ms-[360px]">
@@ -46,11 +55,13 @@ const useGeneral = useGeneralStore()
                         <div class="flex flex-col w-[335px]">
                             <profile-progress></profile-progress>
                             <about-user></about-user>
-                            <photos></photos>
+                            <photos :posts="posts"></photos>
                         </div>
                         <div>
-                            <create-post-box class="mt-5" placeholder="Whats on your mind tim"></create-post-box>
-                            <post></post>
+                            <create-post-box v-if="$page.props.auth.user.id === user.id" class="mt-5" :placeholder="'Whats on your mind ' + user.name + '?'"></create-post-box>
+                            <div v-for="post in posts.data" :key="post">
+                                <post :user="post.user" :post="post" :comments="post.comments"></post>
+                            </div>
                         </div>
                     </div>
                 </div>

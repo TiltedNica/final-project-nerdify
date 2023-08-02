@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Models\Comment;
 use Illuminate\Foundation\Application;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -20,9 +25,7 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Posts');
-});
+
 
 Route::get('/google-auth/redirect', function () {
     return Socialite::driver('google')->redirect();
@@ -35,6 +38,7 @@ Route::get('/google-auth/callback', function () {
     ], [
         'name'=>$user_google->name,
         'email'=>$user_google->email,
+        'image'=>'/img/default-image.jpg',
         'username'=>'user_'.Str::random(8)
     ]);
 
@@ -53,6 +57,19 @@ Route::get('/user', function () {
 
 
 Route::middleware('auth')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('posts.index');
+    Route::post('/post', [PostController::class, 'store'])->name('post.store');
+    Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.destroy');
+
+    Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
+
+    Route::post('/likes', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/likes/{id}', [LikeController::class, 'destroy'])->name('likes.destroy');
+
+    Route::get('/user/{user:username}', [UserController::class, 'show'])->name('user.show');
+    Route::post('/user/update-image', [UserController::class, 'updateImage'])->name('user.update-image');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

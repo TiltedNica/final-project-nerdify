@@ -1,5 +1,5 @@
 <script setup>
-import {toRefs} from "vue";
+import {ref, toRefs} from "vue";
 import {Link, usePage} from "@inertiajs/vue3";
 import {useGeneralStore} from "@/stores/general.js";
 import {storeToRefs} from "pinia";
@@ -22,6 +22,7 @@ const stopScroll = () =>{
 
 const {placeholder} = toRefs(props);
 const user = usePage().props.auth.user
+
 </script>
 
 <template>
@@ -30,7 +31,7 @@ const user = usePage().props.auth.user
         <div class="pl-3.5 pr-5 py-3.5 flex">
             <div class="flex items-center gap-5 w-full justify-between cursor-pointer" @click="useGeneral.isPostOverlay=true; stopScroll()">
                 <div class="flex items-center gap-5">
-                    <profile-picture></profile-picture>
+                    <profile-picture :image="user.image"></profile-picture>
                     <div >
                         <div class="text-[#92929D] font-normal">{{placeholder}}</div>
                     </div>

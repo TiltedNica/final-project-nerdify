@@ -15,6 +15,7 @@ const showMenu = ref(false)
 </script>
 
 <template>
+
     <div id="MainNav" class="px-6 py-6 border-b-2">
         <div class="flex justify-between items-center">
             <div>
@@ -25,7 +26,7 @@ const showMenu = ref(false)
             <div class="flex items-center gap-x-6">
                 <img src="/img/bell-regular.svg" class="h-[24px] w-[24px]" alt="">
                 <div class="flex gap-x-3.5">
-                    <profile-picture></profile-picture>
+                    <profile-picture :image="user.image"></profile-picture>
                     <img src="/img/ic_Dropdown.svg" alt="">
                 </div>
             </div>

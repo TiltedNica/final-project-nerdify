@@ -74,7 +74,7 @@ const submit = () => {
                 Log in
             </PrimaryButton>
             <div class="text-center text-[#92929D] text-sm uppercase mt-3.5">Or</div>
-            <a class="rounded-xl border-2 w-full mt-2.5 flex justify-center gap-x-2.5 py-2.5 text-[#696974] text-sm font-semibold" href="">
+            <a class="rounded-xl border-2 w-full mt-2.5 flex justify-center gap-x-2.5 py-2.5 text-[#696974] text-sm font-semibold" href="/google-auth/redirect">
                 <img src="/img/Google.svg" alt="">
                 Continue with Google
             </a>

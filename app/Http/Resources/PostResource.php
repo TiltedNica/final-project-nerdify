@@ -18,7 +18,6 @@ class PostResource extends ResourceCollection
             return[
                 'id'=>$post->id,
                 'text'=>$post->text,
-                'image'=>$post->image,
                 'created_at'=>$post->created_at->format('M D Y'),
                 'comments'=>$post->comments->map(function ($comment){
                     return [
@@ -37,6 +36,14 @@ class PostResource extends ResourceCollection
                         'user_id'=>$like->user_id,
                         'post_id'=>$like->post_id
                     ];
+                }),
+                'images'=>$post->images->map(function ($image){
+                   return [
+                       'id'=>$image->id,
+                       'post_id'=>$image->post_id,
+                       'name'=>$image->name,
+                       'path'=>$image->path
+                   ];
                 }),
                 'user'=>[
                     'id'=>$post->user->id,

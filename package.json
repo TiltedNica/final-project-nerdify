@@ -18,8 +18,11 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "filepond": "^4.30.4",
+        "filepond-plugin-image-preview": "^4.6.11",
         "pinia": "^2.1.4",
         "pinia-plugin-persistedstate": "^3.2.0",
-        "vue-advanced-cropper": "^2.8.8"
+        "vue-advanced-cropper": "^2.8.8",
+        "vue-filepond": "^7.0.3"
     }
 }

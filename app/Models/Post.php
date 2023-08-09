@@ -25,4 +25,14 @@ class Post extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class);
+    }
+
+    protected $fillable = [
+        'text',
+        'user_id',
+    ];
 }

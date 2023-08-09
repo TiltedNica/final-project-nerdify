@@ -15,6 +15,10 @@ const props = defineProps({
     comments: Object
 })
 
+const isVideo = (filename) =>{
+    return /\.mp4$/i.test(filename)
+}
+
 const userAuth = usePage().props.auth.user
 
 console.log(props.user)
@@ -95,8 +99,13 @@ const isUser = () =>{
         <p class="mt-5 text-[#44444F] text-[14px] leading-6">
             {{post.text}}
         </p>
-        <div v-if="post.image" class="grid grid-cols-2 gap-x-3.5 border-b-2 pb-5 mt-5">
-            <img class="w-[285px]  h-[330px] object-cover rounded-2xl" :src="post.image" alt="">
+        <div v-if="post.images" class="grid grid-cols-2 grid-flow-dense gap-3.5 border-b-2 pb-5 mt-5">
+            <div v-for="image in post.images" :class="[isVideo(image.name) ? 'aspect-w-16 aspect-h-9 w-full col-span-2' : '']">
+                <video  autoplay="autoplay" muted controls v-if="isVideo(image.name)">
+                    <source :src="'/storage/images/' + image.path">
+                </video>
+                <img v-else class="w-[285px] h-[330px] object-cover rounded-2xl" :src="'/storage/images/' + image.path" alt="">
+            </div>
         </div>
         <div class="flex items-center gap-x-12 mt-5">
             <div class="flex gap-x-2.5">

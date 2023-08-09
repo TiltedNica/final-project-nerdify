@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('temporary_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->unsigned()->constrained()->onDelete('cascade');
-            $table->text('text');
+            $table->string('folder');
+            $table->string('file');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('temporary_images');
     }
 };

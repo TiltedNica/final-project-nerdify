@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
+use App\Models\Image;
 use App\Models\Post;
+use App\Models\TemporaryImage;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 
@@ -29,24 +33,30 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'text'=>'required',
-
+            'text' => 'required',
         ]);
-        $post = new Post();
 
-        if ($request->hasFile('image')){
-            $request->validate(['image'=>'required|mimes:jpg,jpeg,png']);
-            $post = (new ImageService)->updateImage($post, $request);
+       $post = Post::create([
+            'user_id'=>auth()->user()->id,
+            'text'=>$request->text
+        ]);
+
+        $temporaryImages = TemporaryImage::whereIn('folder', $request->images)->get();
+        foreach ($temporaryImages as $temporaryImage) {
+            Storage::copy('images/tmp/' . $temporaryImage->folder . '/' . $temporaryImage->file, 'images/' . $temporaryImage->folder . '/' . $temporaryImage->file);
+            Image::create([
+                'post_id' => $post->id,
+                'name' => $temporaryImage->file,
+                'path' => $temporaryImage->folder . '/' . $temporaryImage->file,
+            ]);
+            Storage::deleteDirectory('images/tmp/' . $temporaryImage->folder);
+            $temporaryImage->delete();
         }
 
-        $post->user_id = auth()->user()->id;
-        $post->text = $request->input('text');
-        $post->save();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
+
     public function destroy(string $id)
     {
         $post = Post::find($id);

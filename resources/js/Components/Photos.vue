@@ -4,6 +4,9 @@ import {Link} from "@inertiajs/vue3";
 import {useGeneralStore} from "@/stores/general.js";
 
 const useGeneral = useGeneralStore()
+const isVideo = (filename) =>{
+    return /\.mp4$/i.test(filename)
+}
 
 defineProps({
     posts: Object
@@ -16,8 +19,12 @@ defineProps({
             <h3>Photos and Videos</h3>
             <Link class="text-[#0062FF]" href="/">See All</Link>
         </div>
-        <div v-for="photo in posts.data" :key="photo" class="grid grid-cols-3 gap-2.5 px-5 py-5">
-            <img v-if="photo.image" class="h-[90px] w-[90px] rounded-2xl" :src="photo.image">
+        <div class="grid grid-cols-3 gap-2.5 px-5 py-5">
+            <template v-for="post in posts.data" :key="post.id">
+                <template v-for="photo in post.images" :key="photo.id">
+                    <img :class="[isVideo(photo.name) ? 'hidden' : 'h-[90px] w-[90px] rounded-2xl']" :src="'/storage/images/' + photo.path">
+                </template>
+            </template>
         </div>
     </div>
 </template>

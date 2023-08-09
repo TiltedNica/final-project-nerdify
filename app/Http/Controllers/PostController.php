@@ -52,7 +52,6 @@ class PostController extends Controller
             Storage::deleteDirectory('images/tmp/' . $temporaryImage->folder);
             $temporaryImage->delete();
         }
-
     }
 
 

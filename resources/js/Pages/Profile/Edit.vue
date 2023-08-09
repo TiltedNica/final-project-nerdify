@@ -12,6 +12,7 @@ defineProps({
     status: {
         type: String,
     },
+
 });
 </script>
 

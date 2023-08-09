@@ -15,15 +15,14 @@ const props = defineProps({
     comments: Object
 })
 
+
+
+
 const isVideo = (filename) =>{
     return /\.mp4$/i.test(filename)
 }
 
 const userAuth = usePage().props.auth.user
-
-console.log(props.user)
-
-console.log(props.post.id)
 
 const createComment = () =>{
     router.post('/comment', {
@@ -88,7 +87,7 @@ const isUser = () =>{
     <div id="CreatePostBox" class="w-[625px] p-5 bg-white rounded-t-2xl mt-3 border-b-2">
         <div class="flex justify-between">
             <div class="flex items-center gap-x-2.5">
-                <profile-picture :image="user.image"></profile-picture>
+                <profile-picture :username="user.username" :image="user.image"></profile-picture>
                 <div>
                     <h3 class="text-[#171725] font-semibold">{{ user.name }}</h3>
                     <div class="text-[#92929D] text-[12px] font-normal">{{ post.created_at }}</div>

@@ -11,7 +11,6 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview/dist/filep
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 
-
 // Create FilePond component
 const FilePond = vueFilePond(FilePondPluginImagePreview);
 
@@ -25,6 +24,12 @@ const form = useForm({
     text: '',
     images: []
 })
+
+const handleSubmit = () => {
+    form.post('/post');
+    useGeneral.isPostOverlay = false;
+    resetScroll();
+}
 
 const handleFilePondLoad = (response) => {
     form.images.push(response);
@@ -44,25 +49,6 @@ const resetScroll = () =>{
     document.body.classList.remove('overflow-hidden')
 }
 
-const createPost = () => {
-    router.post('/post', form, {
-        forceFormData: true,
-        onError: errors => {
-            errors && errors.text ? errors.value = errors.text: ''
-            errors && errors.text ? errors.value = errors.image: ''
-        },
-        onSuccess: ()=>{
-          form.text = null,
-          form.image = null
-          useGeneral.isPostOverlay = false;
-        }
-    },
-        {
-            preserveScroll:true
-        },
-        resetScroll()
-    )
-}
 </script>
 
 <template>
@@ -72,9 +58,9 @@ const createPost = () => {
                 <h3>Post Something</h3>
                 <img class="cursor-pointer" @click="useGeneral.isPostOverlay=false; resetScroll()" src="/img/ic_Close.svg" alt="">
             </div>
-            <form @submit.prevent="$event=>form.post('/post')" class="p-4 max-h-[600px] overflow-y-scroll">
+            <form @submit.prevent="handleSubmit" class="p-4 max-h-[600px] overflow-y-scroll">
                 <div class="flex items-center border-b-2">
-                    <profile-picture :image="user.image"></profile-picture>
+                    <profile-picture class="pointer-events-none" :image="user.image"></profile-picture>
                     <div class="w-full">
                         <textarea v-model="form.text" class="resize-none rounded-2xl w-full border-none placeholder: text-[##92929D] placeholder:text-[18px]" :placeholder="'Whats on your mind ' + user.name + '?'"  type="text"/>
                     </div>

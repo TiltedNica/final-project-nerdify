@@ -10,7 +10,6 @@ const useGeneral = useGeneralStore()
 
 
 const user = usePage().props.auth.user
-const showMenu = ref(false)
 
 </script>
 
@@ -26,12 +25,12 @@ const showMenu = ref(false)
             <div class="flex items-center gap-x-6">
                 <img src="/img/bell-regular.svg" class="h-[24px] w-[24px]" alt="">
                 <div class="flex gap-x-3.5">
-                    <profile-picture :image="user.image"></profile-picture>
+                    <profile-picture :username="user.username" :image="user.image"></profile-picture>
                     <img src="/img/ic_Dropdown.svg" alt="">
                 </div>
             </div>
         </div>
     </div>
     <slot></slot>
-    <create-post-overlay v-if="useGeneral.isPostOverlay" @showModal="useGeneral.isPostOverlay=false"></create-post-overlay>
+    <create-post-overlay v-if="useGeneral.isPostOverlay"></create-post-overlay>
 </template>

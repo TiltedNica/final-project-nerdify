@@ -48,7 +48,8 @@ class PostResource extends ResourceCollection
                 'user'=>[
                     'id'=>$post->user->id,
                     'name'=>$post->user->name,
-                    'image'=>$post->user->image
+                    'image'=>$post->user->image,
+                    'username'=>$post->user->username
                 ]
             ];
         });

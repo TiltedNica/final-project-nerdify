@@ -10,7 +10,7 @@ const user = usePage().props.auth.user
 <template>
     <div class="pl-2.5 pr-2.5">
         <Link href="/" class="mt-5  flex gap-x-2.5 items-center h-16 w-[230px] bg-[#FAFAFB] rounded-2xl border-2 py-3 pl-3">
-            <profile-picture :image="user.image"></profile-picture>
+            <profile-picture :username="user.username" :image="user.image"></profile-picture>
             <div>
                 <h3 class="font-semibold text-[#171725]">{{ user.name }}</h3>
                 <h4 class="text-[#92929D] text-[12px] font-normal">{{user.username}}</h4>

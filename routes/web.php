@@ -41,6 +41,7 @@ Route::get('/google-auth/callback', function () {
         'name'=>$user_google->name,
         'email'=>$user_google->email,
         'image'=>'/img/default-image.jpg',
+        'banner_picture'=>'/img/Cover.png',
         'username'=>'user_'.Str::random(8)
     ]);
 
@@ -72,6 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/likes/{id}', [LikeController::class, 'destroy'])->name('likes.destroy');
 
     Route::get('/user/{user:username}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/user/{user:username}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::post('/user/update-image', [UserController::class, 'updateImage'])->name('user.update-image');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

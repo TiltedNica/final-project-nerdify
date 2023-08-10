@@ -6,6 +6,7 @@ import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage, router } from '@inertiajs/vue3';
 import MainNavLayout from "@/Layouts/MainNavLayout.vue";
 import LeftSidebar from "@/Components/LeftSidebar.vue";
+import {useGeneralStore} from "@/stores/general.js";
 
 
 defineProps({
@@ -15,15 +16,21 @@ defineProps({
     status: {
         type: String,
     },
+
 });
 
+// const props = defineProps({
+//     User: Object
+// })
+
+const useGeneral = useGeneralStore()
 const user = usePage().props.auth.user;
 
 const form = useForm({
     name: user.name,
     email: user.email,
-    image: user.image,
-    banner_picture: user.banner_picture,
+    image: null,
+    banner_picture: null,
     username: user.username,
     location: user.location,
     website: user.website,
@@ -105,26 +112,6 @@ function updateProfile(){
                         </div>
 
                         <div>
-                            <label for="title" class="block text-sm font-medium text-gray-700">Profile Picture</label>
-                            <div class="mt-1 flex flex-col items-start gap-y-3">
-                                <div>
-                                    <img :src="form.image" alt="w-32 h-32">
-                                </div>
-                                <input type="file" id="image" @input="form.image =$event.target.files[0]"  class="block w-full transition duration-150 ease-in-out">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="title" class="block text-sm font-medium text-gray-700">Banner Picture</label>
-                            <div class="mt-1 flex flex-col items-start gap-y-3">
-                                <div>
-                                    <img :src="form.banner_picture" alt="w-32 h-32">
-                                </div>
-                                <input type="file" id="image" @input="form.image =$event.target.files[0]"  class="block w-full transition duration-150 ease-in-out">
-                            </div>
-                        </div>
-
-                        <div>
                             <InputLabel for="location" value="Location" />
 
                             <TextInput
@@ -189,9 +176,9 @@ function updateProfile(){
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-4 justify-between">
                             <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
+                            <div class="cursor-pointer bg-[#0062ff] px-4 py-2 rounded-lg text-white" @click="useGeneral.isEditProfileOverlay=true">Update Profile Pictures</div>
                             <Transition
                                 enter-active-class="transition ease-in-out"
                                 enter-from-class="opacity-0"
@@ -201,8 +188,11 @@ function updateProfile(){
                                 <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
                             </Transition>
                         </div>
+
                     </form>
+
                 </section>
+
             </div>
 
         </div>

@@ -32,13 +32,13 @@ defineProps({
             <div class="bg-[#F1F1F5] w-full flex flex-col items-center py-8">
                 <div class="w-[990px]">
                     <div class="relative w-full">
-                        <img :src="user.banner_picture" alt="">
+                        <img class="w-full max-h-[260px] object-cover rounded-t-2xl" :src="user.banner_picture" alt="">
                         <h2 class="left-[221px] top-[183px] absolute text-2xl text-white font-semibold">{{
                                 user.name
                             }}</h2>
                         <h4 class="left-[220px] absolute top-[214px] text-[#D5D5DC] text-base font-normal leading-6">@{{user.username}}</h4>
                         <Link v-if="$page.props.auth.user.id === user.id" :href="`/user/${user.username}/edit`"  class="absolute top-5 right-5 py-2.5 px-3.5 bg-[#17172580] rounded-2xl border-white border-2 text-white">Edit Profile</Link>
-                        <profile-picture-user :image="user.image"  class="absolute top-[138px] left-8"></profile-picture-user>
+                        <profile-picture-user :username="user.username" :image="user.image"  class="absolute top-[138px] left-8"></profile-picture-user>
                     </div>
                     <div class="bg-white w-full rounded-b-2xl">
                         <div class="flex ms-[360px]">

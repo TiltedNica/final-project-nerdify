@@ -5,6 +5,7 @@ import {useGeneralStore} from "@/stores/general.js";
 import {storeToRefs} from "pinia";
 import ProfilePicture from "@/Components/ProfilePicture.vue";
 import CreatePostOverlay from "@/Components/CreatePostOverlay.vue";
+import EditPicturesOverlay from "@/Components/EditPicturesOverlay.vue";
 
 const useGeneral = useGeneralStore()
 
@@ -33,4 +34,5 @@ const user = usePage().props.auth.user
     </div>
     <slot></slot>
     <create-post-overlay v-if="useGeneral.isPostOverlay"></create-post-overlay>
+    <edit-pictures-overlay v-if="useGeneral.isEditProfileOverlay"/>
 </template>

@@ -126,11 +126,11 @@ const isUser = () =>{
     </div>
     <div class="w-[625px] p-5 bg-white rounded-b-2xl border-b-2 flex gap-x-2.5 flex-col gap-y-2.5" >
         <div v-for="comment in comments" :key="comment" class="flex items-center gap-x-2.5">
-            <profile-picture :image="user.image"></profile-picture>
+            <profile-picture :image="comment.user.image"></profile-picture>
             <div class="bg-[#FAFAFB] p-2.5 rounded-2xl text-[14px] text-[#92929D]">{{ comment.text }}</div>
         </div>
         <div class="flex items-center gap-x-2.5">
-            <profile-picture :image="user.image"></profile-picture>
+            <profile-picture :image="userAuth.image"></profile-picture>
             <form action="" @submit.prevent="createComment" class="flex relative w-full">
                     <input v-model="form.comment" type="text" placeholder="Write Your Comment" class="bg-[#FAFAFB] placeholder-[#92929D] placeholder: leading-6 placeholder:text-[14px] border-none rounded-2xl w-full">
                     <img class="absolute mt-2.5 right-2.5 cursor-pointer" src="/img/ic_Image.svg" alt="">

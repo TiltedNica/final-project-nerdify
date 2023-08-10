@@ -10,8 +10,8 @@ export const useGeneralStore = defineStore('general', ()=> {
     // }),
     // persist: true
     const isPostOverlay = ref(false)
-    const isEditOverlay = ref(false)
+    const isEditProfileOverlay = ref(false)
     const isImageDisplay = ref(null)
 
-    return {isPostOverlay, isImageDisplay, isEditOverlay}
+    return {isPostOverlay, isImageDisplay, isEditProfileOverlay}
 })

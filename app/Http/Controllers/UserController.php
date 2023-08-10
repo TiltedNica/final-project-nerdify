@@ -6,6 +6,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\ImageService;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -30,7 +31,6 @@ class UserController extends Controller
      */
     public function show(string $username)
     {
-
         $user = User::where('username', $username)->firstOrFail();
         $posts = Post::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         return Inertia::render('User', [
@@ -46,6 +46,17 @@ class UserController extends Controller
     {
 
         return Inertia::render('Profile/Partials/UpdateProfileInformationForm', ['user'=>$user]);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate(['image'=>'nullable|mimes:jpg,jpeg,png', 'banner_picture'=>'nullable|mimes:jpg,jpeg,png']);
+        $user = (new ImageService)->updateImage(auth()->user(), $request);
+        $user->save();
+        $banner= (new ImageService)->updateBanner(auth()->user(), $request);
+        $banner->save();
+
+        return redirect(route('user.show', auth()->user()));
     }
 
 

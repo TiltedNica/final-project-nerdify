@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/user/{user:username}', [UserController::class, 'show'])->name('user.show');
     Route::get('/user/{user:username}/edit', [UserController::class, 'edit'])->name('user.edit');
-    Route::post('/user/update-image', [UserController::class, 'updateImage'])->name('user.update-image');
+    Route::put('/user/{user:username}', [UserController::class, 'update'])->name('user.update');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

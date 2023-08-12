@@ -20,6 +20,7 @@ defineProps({
     likes: String,
     images: String,
     isFollowing: Boolean,
+    savedPosts: Object,
     posts: Object,
     user: Object,
     date: String
@@ -48,12 +49,12 @@ defineProps({
                     <div class="bg-white w-full rounded-b-2xl">
                         <div class="flex ms-[360px] items-center">
                             <banner-filter :amount="posts.data.length" title="Post"></banner-filter>
-                            <banner-filter title="Followers" amount="2,564"></banner-filter>
-                            <banner-filter title="Following" amount="3,154"></banner-filter>
+                            <banner-filter title="Followers" :amount="user.followers.length"></banner-filter>
+                            <banner-filter title="Following" :amount="user.followings.length"></banner-filter>
                             <banner-filter :amount="likes" title="Likes"></banner-filter>
                             <banner-filter title="Photos" :amount="images"></banner-filter>
-                            <banner-filter title="Videos" amount="24"></banner-filter>
-                            <banner-filter title="Saved" amount="18"></banner-filter>
+                            <banner-filter title="Videos" amount="2"></banner-filter>
+                            <banner-filter title="Saved" :amount="user.saved_posts.length"></banner-filter>
                             <follow-button :followed="isFollowing" :username="user.username" v-if="$page.props.auth.user.id !== user.id"/>
                         </div>
                     </div>

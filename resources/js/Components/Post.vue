@@ -94,7 +94,7 @@ const isUser = () =>{
                     <div class="text-[#92929D] text-[12px] font-normal">{{ post.created_at }}</div>
                 </div>
             </div>
-            <dropdown-post-menu/>
+            <dropdown-post-menu :user="user" :post="post"/>
         </div>
         <p class="mt-5 text-[#44444F] text-[14px] leading-6">
             {{post.text}}
@@ -121,7 +121,7 @@ const isUser = () =>{
             </div>
             <div class="flex gap-x-2.5">
                 <img src="/img/ic_Saved.svg" alt="">
-                <h3 class="text-[#44444F] text-[14px] leading-6">12 Saved</h3>
+                <h3 class="text-[#44444F] text-[14px] leading-6">{{post.saved_count}} Saved</h3>
             </div>
         </div>
     </div>

@@ -51,7 +51,9 @@ class PostResource extends ResourceCollection
                     'name'=>$post->user->name,
                     'image'=>$post->user->image,
                     'username'=>$post->user->username,
-                ]
+                ],
+                'is_saved'=>$post->is_saved,
+                'saved_count'=>$post->saved_count,
             ];
         });
     }

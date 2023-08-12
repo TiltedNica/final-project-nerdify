@@ -33,15 +33,28 @@ class UserController extends Controller
      */
     public function show(string $username)
     {
-        $user = User::where('username', $username)->firstOrFail();
+        $user = User::with(['followers', 'followings', 'savedPosts'])->where('username', $username)->firstOrFail();
         $date = $user->created_at->calendar();
         $isFollowing = $user->isFollowing(auth()->user());
         $posts = Post::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+
+        $userForHidden = auth()->user();
+        $hiddenPosts = $userForHidden->hiddenPosts->pluck('id')->toArray();
+
+        $visiblePosts = $posts->reject(function ($post) use ($hiddenPosts) {
+            return in_array($post->id, $hiddenPosts);
+        });
+
         $images = $user->posts()->withCount('images')->get()->sum(function ($post){
             return $post->images_count;
         });
         $likes = $user->posts()->withCount('likes')->get()->sum(function ($post){
             return $post->likes_count;
+        });
+        $postsWithIsSaved = $visiblePosts->map(function ($post) use ($user) {
+            $post->is_saved = $user->savedPosts->contains('id', $post->id);
+            $post->saved_count = $post->usersWhoSaved->count();
+            return $post;
         });
         return Inertia::render('User', [
             'isFollowing'=>$isFollowing,
@@ -49,7 +62,7 @@ class UserController extends Controller
             'likes'=>$likes,
             'user'=> $user,
             'date'=> $date,
-            'posts' => new PostResource($posts)
+            'posts' => new PostResource($postsWithIsSaved),
         ]);
     }
 

@@ -6,6 +6,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\TemporaryImage;
+use App\Models\User;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,8 +22,24 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->get();
+
+        // Obtener los IDs de los posts ocultos del usuario
+        $user = auth()->user();
+        $hiddenPostsIds = $user->hiddenPosts->pluck('id')->toArray();
+
+        // Filtrar los posts ocultos
+        $visiblePosts = $posts->reject(function ($post) use ($hiddenPostsIds) {
+            return in_array($post->id, $hiddenPostsIds);
+        });
+
+        $postsWithIsSavedAndCount = $visiblePosts->map(function ($post) use ($user) {
+            $post->is_saved = $user->savedPosts->contains('id', $post->id);
+            $post->saved_count = $post->usersWhoSaved->count();
+            return $post;
+        });
+
         return Inertia::render('Posts', [
-            'posts' => new PostResource($posts)
+            'posts' => new PostResource($postsWithIsSavedAndCount)
         ]);
     }
 
@@ -53,6 +70,28 @@ class PostController extends Controller
         }
     }
 
+    public function hide(Post $post)
+    {
+        $user = auth()->user();
+
+        // Verificar si ya existe una entrada en la tabla hidden_posts
+        if (!$user->hiddenPosts->contains('id', $post->id)) {
+            $user->hiddenPosts()->attach($post);
+        }
+
+        return redirect()->back();
+    }
+
+    public function hideAllUserPosts(User $user)
+    {
+        $posts = $user->posts;
+        $currentUser = auth()->user();
+        foreach ($posts as $post){
+            $currentUser->hiddenPosts()->attach($post);
+        }
+
+        return redirect()->back();
+    }
 
 
     public function destroy(string $id)

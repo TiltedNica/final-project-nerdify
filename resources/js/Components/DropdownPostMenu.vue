@@ -1,6 +1,14 @@
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import {Link} from "@inertiajs/vue3";
+
+import { BookmarkIcon, BookmarkSlashIcon, XCircleIcon, ArchiveBoxXMarkIcon } from '@heroicons/vue/20/solid'
+import User from "@/Pages/User.vue";
+
+defineProps({
+    post: Object,
+    user: Object
+})
 
 </script>
 
@@ -27,39 +35,55 @@ import { ChevronDownIcon } from '@heroicons/vue/20/solid'
             >
                 <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
-                        <button
+                        <Link preserve-scroll v-if="!post.is_saved" method="POST" :href="route('saved-post.store', {post: `${post.id}`})"
                             :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                  'group flex gap-x-4 w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
                         >
-
-                            Edit
-                        </button>
+                            <bookmark-icon class="w-6 h-6 text-slate-400"/>
+                            Save Post
+                        </Link>
+                        <Link preserve-scroll v-else method="DELETE" :href="route('unsave-post.destroy', {post: `${post.id}`})"
+                              :class="[
+                  active ? 'bg-violet-500 text-white' : 'text-gray-900',
+                  'group flex w-full flex gap-x-4 items-center rounded-md px-2 py-2 text-sm',
+                ]"
+                        >
+                            <bookmark-slash-icon class="w-6 h-6 text-slate-400"/>
+                            Unsave Post
+                        </Link>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
-                        <button
+                        <Link
+                            preserve-scroll
+                            method="POST"
+                            :href="route('post.hide', {post: `${post.id}`})"
                             :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                  'group flex w-full gap-x-4 items-center rounded-md px-2 py-2 text-sm',
                 ]"
                         >
-
-                            Duplicate
-                        </button>
+                            <x-circle-icon class="w-6 h-6 text-slate-400"/>
+                            Hide this Post
+                        </Link>
                     </MenuItem>
                 </div>
                 <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
-                        <button
+                        <Link
+                            preserve-scroll
+                            method="POST"
+                            :href="route('post.hide-all-user-posts', {user: `${user.id}`})"
                             :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                  'group flex w-full items-center gap-x-4 rounded-md px-2 py-2 text-sm',
                 ]"
                         >
 
-                            Archive
-                        </button>
+                            <archive-box-x-mark-icon class="w-6 h-6 text-slate-400"/>
+                            Hide All Posts
+                        </Link>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
                         <button

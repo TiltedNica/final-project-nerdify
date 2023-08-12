@@ -17,7 +17,7 @@ defineProps({ posts: Object })
     <MainNavLayout>
             <div class="flex">
                 <left-sidebar></left-sidebar>
-                <div class="bg-[#F1F1F5] w-full flex flex-col items-center ">
+                <div class="bg-[#F1F1F5] w-full flex flex-col items-center">
                     <create-post-box class="mt-3" :placeholder="'Whats on your mind ' + user.name + '?'"></create-post-box>
                     <div v-for="post in posts.data" :key="post">
                         <post :user="post.user" :post="post" :comments="post.comments"></post>

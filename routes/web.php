@@ -5,6 +5,7 @@ use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SavedPostController;
 use App\Http\Controllers\UploadTemporaryImageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DeleteTemporaryImageController;
@@ -66,6 +67,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.destroy');
     Route::post('/upload', UploadTemporaryImageController::class);
     Route::delete('/revert/{folder}', DeleteTemporaryImageController::class);
+
+    Route::post('/save-post/{post}', [SavedPostController::class, 'store'])->name('saved-post.store');
+    Route::delete('/unsave-post/{post}', [SavedPostController::class, 'destroy'])->name('unsave-post.destroy');
+
+    Route::post('/hide-posts/{post}', [PostController::class, 'hide'])->name('post.hide');
+    Route::post('/hide-all-posts/{user}', [PostController::class, 'hideAllUserPosts'])->name('post.hide-all-user-posts');
 
     Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');

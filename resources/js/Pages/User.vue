@@ -54,7 +54,7 @@ defineProps({
                             <banner-filter title="Photos" :amount="images"></banner-filter>
                             <banner-filter title="Videos" amount="24"></banner-filter>
                             <banner-filter title="Saved" amount="18"></banner-filter>
-                            <follow-button :isFollowing="isFollowing" :username="user.username" v-if="$page.props.auth.user.id !== user.id"/>
+                            <follow-button :followed="isFollowing" :username="user.username" v-if="$page.props.auth.user.id !== user.id"/>
                         </div>
                     </div>
                     <div class="flex justify-between">

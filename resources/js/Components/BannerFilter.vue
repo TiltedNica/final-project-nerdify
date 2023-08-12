@@ -4,7 +4,7 @@ import {string} from "postcss-selector-parser";
 
 const props = defineProps({
     title: String,
-    amount: String
+    amount: String,
 })
 
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Carbon\Carbon;
 
 class PostResource extends ResourceCollection
 {
@@ -18,7 +19,7 @@ class PostResource extends ResourceCollection
             return[
                 'id'=>$post->id,
                 'text'=>$post->text,
-                'created_at'=>$post->created_at->format('M D Y'),
+                'created_at'=>$post->created_at->diffForHumans(),
                 'comments'=>$post->comments->map(function ($comment){
                     return [
                         'id'=>$comment->id,
@@ -49,7 +50,7 @@ class PostResource extends ResourceCollection
                     'id'=>$post->user->id,
                     'name'=>$post->user->name,
                     'image'=>$post->user->image,
-                    'username'=>$post->user->username
+                    'username'=>$post->user->username,
                 ]
             ];
         });

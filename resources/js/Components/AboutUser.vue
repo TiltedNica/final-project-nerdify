@@ -1,5 +1,10 @@
 <script setup>
 
+defineProps({
+    user: Object,
+    date: String
+})
+
 </script>
 
 <template>
@@ -9,27 +14,23 @@
             <img src="/img/ic_More.svg" alt="">
         </div>
         <div class="px-5">
-            <p class="text-[#44444F] leading-6 text-sm font-normal py-3.5 ">“Pushing pixels and experiences in digital products for Sebostudio”</p>
+            <p v-if="user.description" class="text-[#44444F] leading-6 text-sm font-normal py-3.5 ">“{{user.description}}”</p>
             <hr>
-            <div class="flex gap-x-3.5 items-center py-4">
+            <div v-if="user.location" class="flex gap-x-3.5 items-center py-4">
                 <img src="/img/ic_Place.svg" alt="">
-                <p class="text-[#171725] text-sm">Yogyakarta, ID</p>
+                <p class="text-[#171725] text-sm">{{user.location}}</p>
             </div>
-            <div class="flex gap-x-3.5 items-center py-4">
+            <div v-if="user.website" class="flex gap-x-3.5 items-center py-4">
                 <img src="/img/ic_website.svg" alt="">
-                <p class="text-[#171725] text-sm">dribbble.com/fawait</p>
+                <p class="text-[#171725] text-sm">{{ user.website }}</p>
             </div>
             <div class="flex gap-x-3.5 items-center py-4">
                 <img src="/img/ic_date.svg" alt="">
-                <p class="text-[#171725] text-sm">Joined June 2012</p>
+                <p class="text-[#171725] text-sm">Joined {{date}}</p>
             </div>
-            <div class="flex gap-x-3.5 items-center py-4">
+            <div v-if="user.job" class="flex gap-x-3.5 items-center py-4">
                 <img src="/img/ic_Working.svg" alt="">
-                <p class="text-[#171725] text-sm">Working at Sebo Studio</p>
-            </div>
-            <div class="flex gap-x-3.5 items-center py-4">
-                <img src="/img/ic_relationship.svg" alt="">
-                <p class="text-[#171725] text-sm">In relationship with Gal Gadot</p>
+                <p class="text-[#171725] text-sm">Working at {{ user.job }}</p>
             </div>
         </div>
     </div>

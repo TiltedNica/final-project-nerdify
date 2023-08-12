@@ -29,6 +29,7 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    description: user.description,
     image: null,
     banner_picture: null,
     username: user.username,
@@ -112,6 +113,20 @@ function updateProfile(){
                         </div>
 
                         <div>
+                            <InputLabel for="description" value="Description" />
+
+                            <TextInput
+                                id="description"
+                                type="text"
+                                class="mt-1 block w-full"
+                                v-model="form.description"
+                                autocomplete="description"
+                            />
+
+                            <InputError class="mt-2" :message="form.errors.description" />
+                        </div>
+
+                        <div>
                             <InputLabel for="location" value="Location" />
 
                             <TextInput
@@ -119,7 +134,6 @@ function updateProfile(){
                                 type="text"
                                 class="mt-1 block w-full"
                                 v-model="form.location"
-                                required
                                 autocomplete="location"
                             />
 
@@ -134,7 +148,7 @@ function updateProfile(){
                                 type="text"
                                 class="mt-1 block w-full"
                                 v-model="form.website"
-                                required
+
 
                             />
 
@@ -149,7 +163,7 @@ function updateProfile(){
                                 type="text"
                                 class="mt-1 block w-full"
                                 v-model="form.job"
-                                required
+
                            />
 
                             <InputError class="mt-2" :message="form.errors.job" />

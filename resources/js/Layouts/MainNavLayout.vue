@@ -6,6 +6,8 @@ import {storeToRefs} from "pinia";
 import ProfilePicture from "@/Components/ProfilePicture.vue";
 import CreatePostOverlay from "@/Components/CreatePostOverlay.vue";
 import EditPicturesOverlay from "@/Components/EditPicturesOverlay.vue";
+import DropdownMenu from "@/Components/DropdownMenu.vue";
+
 
 const useGeneral = useGeneralStore()
 
@@ -25,9 +27,9 @@ const user = usePage().props.auth.user
             </div>
             <div class="flex items-center gap-x-6">
                 <img src="/img/bell-regular.svg" class="h-[24px] w-[24px]" alt="">
-                <div class="flex gap-x-3.5">
-                    <profile-picture :username="user.username" :image="user.image"></profile-picture>
-                    <img src="/img/ic_Dropdown.svg" alt="">
+                <div class="flex gap-x-3.5 items-center">
+                    <profile-picture w="34" h="34" :username="user.username" :image="user.image"></profile-picture>
+                    <dropdown-menu></dropdown-menu>
                 </div>
             </div>
         </div>

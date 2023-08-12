@@ -16,7 +16,7 @@ class ImageService
 
             if (!empty($model->image)) {
                 $currentImage = public_path($model->image);
-                if (file_exists($currentImage) && $currentImage != public_path('/img/user-placeholder.png')) {
+                if (file_exists($currentImage) && $currentImage != public_path('/img/default-image.jpg')) {
                     unlink($currentImage);
                 }
             }
@@ -32,7 +32,7 @@ class ImageService
         if ($request->hasFile('banner_picture')) {
             $file = $request->file('banner_picture');
             $extension = $file->getClientOriginalExtension();
-            $name = time() . '.' . $extension;
+            $name = time()*5 . '.' . $extension;
             $path = $file->storeAs('img', $name, 'public');
 
             if (!empty($model->banner_picture)) {

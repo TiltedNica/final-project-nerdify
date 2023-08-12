@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -35,7 +36,7 @@ Route::get('/google-auth/redirect', function () {
 
 Route::get('/google-auth/callback', function () {
     $user_google = Socialite::driver('google')->stateless()->user();
-    $user = User::updateOrCreate([
+    $user = User::firstOrCreate([
         'google_id' => $user_google->id,
     ], [
         'name'=>$user_google->name,
@@ -75,6 +76,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{user:username}', [UserController::class, 'show'])->name('user.show');
     Route::get('/user/{user:username}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{user:username}', [UserController::class, 'update'])->name('user.update');
+    Route::get('/user/{user:username}/photos', [UserController::class, 'showPhotos'])->name('user.photos');
+
+    Route::get('/user/{user:username}/followings', [FollowerController::class, 'index'])->name('users.followings');
+    Route::post('/{user:username}/follow', [FollowerController::class, 'store'])->name('users.follow');
+    Route::delete('/{user:username}/follow', [FollowerController::class, 'destroy'])->name('users.unfollow');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

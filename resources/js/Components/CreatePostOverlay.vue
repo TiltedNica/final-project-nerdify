@@ -60,7 +60,7 @@ const resetScroll = () =>{
             </div>
             <form @submit.prevent="handleSubmit" class="p-4 max-h-[600px] overflow-y-scroll">
                 <div class="flex items-center border-b-2">
-                    <profile-picture class="pointer-events-none" :image="user.image"></profile-picture>
+                    <profile-picture w="36" h="36" class="pointer-events-none" :image="user.image"></profile-picture>
                     <div class="w-full">
                         <textarea v-model="form.text" class="resize-none rounded-2xl w-full border-none placeholder: text-[##92929D] placeholder:text-[18px]" :placeholder="'Whats on your mind ' + user.name + '?'"  type="text"/>
                     </div>

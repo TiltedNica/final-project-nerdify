@@ -13,5 +13,8 @@ export const useGeneralStore = defineStore('general', ()=> {
     const isEditProfileOverlay = ref(false)
     const isImageDisplay = ref(null)
 
-    return {isPostOverlay, isImageDisplay, isEditProfileOverlay}
+    const isSelectedOption = ref('Followers')
+    const isSelectedOptionPhotos = ref('Oldest First')
+
+    return {isPostOverlay, isImageDisplay, isEditProfileOverlay, isSelectedOption, isSelectedOptionPhotos}
 })

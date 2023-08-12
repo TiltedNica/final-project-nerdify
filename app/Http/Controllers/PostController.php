@@ -21,7 +21,6 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->get();
-
         return Inertia::render('Posts', [
             'posts' => new PostResource($posts)
         ]);

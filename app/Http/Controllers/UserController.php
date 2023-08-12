@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\ImageService;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -32,9 +34,21 @@ class UserController extends Controller
     public function show(string $username)
     {
         $user = User::where('username', $username)->firstOrFail();
+        $date = $user->created_at->calendar();
+        $isFollowing = $user->isFollowing(auth()->user());
         $posts = Post::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $images = $user->posts()->withCount('images')->get()->sum(function ($post){
+            return $post->images_count;
+        });
+        $likes = $user->posts()->withCount('likes')->get()->sum(function ($post){
+            return $post->likes_count;
+        });
         return Inertia::render('User', [
+            'isFollowing'=>$isFollowing,
+            'images'=>$images,
+            'likes'=>$likes,
             'user'=> $user,
+            'date'=> $date,
             'posts' => new PostResource($posts)
         ]);
     }
@@ -46,6 +60,14 @@ class UserController extends Controller
     {
 
         return Inertia::render('Profile/Partials/UpdateProfileInformationForm', ['user'=>$user]);
+    }
+
+    public function showPhotos(string $username)
+    {
+        $user = User::where('username', $username)->firstOrFail();
+        $postsDesc = Post::with('images')->where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $postsAsc = Post::with('images')->where('user_id', $user->id)->orderBy('created_at', 'asc')->get();
+        return Inertia::render('Photos', ['postsDesc'=>$postsDesc, 'postsAsc'=>$postsAsc]);
     }
 
     public function update(Request $request)

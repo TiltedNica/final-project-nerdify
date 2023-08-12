@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'username',
+        'description',
         'email',
         'image',
         'password',
@@ -67,6 +68,11 @@ class User extends Authenticatable
     }
 
     public function isFollowing(User $user)
+    {
+        return $this->followers->contains($user->id);
+    }
+
+    public function isFollowedBy(User $user)
     {
         return $this->followers->contains($user->id);
     }

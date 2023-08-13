@@ -21,13 +21,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->get();
-
-        // Obtener los IDs de los posts ocultos del usuario
         $user = auth()->user();
+        $followedUserIds = $user->followings->pluck('id')->toArray();
+        $followedUserIds[] = $user->id;
         $hiddenPostsIds = $user->hiddenPosts->pluck('id')->toArray();
+        $posts = Post::whereIn('user_id', $followedUserIds)->orderBy('created_at', 'desc')->get();
 
-        // Filtrar los posts ocultos
         $visiblePosts = $posts->reject(function ($post) use ($hiddenPostsIds) {
             return in_array($post->id, $hiddenPostsIds);
         });
@@ -35,6 +34,7 @@ class PostController extends Controller
         $postsWithIsSavedAndCount = $visiblePosts->map(function ($post) use ($user) {
             $post->is_saved = $user->savedPosts->contains('id', $post->id);
             $post->saved_count = $post->usersWhoSaved->count();
+            $post->is_following = $post->user->isFollowing(auth()->user());
             return $post;
         });
 

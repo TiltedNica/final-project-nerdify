@@ -2,7 +2,7 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import {Link} from "@inertiajs/vue3";
 
-import { BookmarkIcon, BookmarkSlashIcon, XCircleIcon, ArchiveBoxXMarkIcon } from '@heroicons/vue/20/solid'
+import { BookmarkIcon, BookmarkSlashIcon, XCircleIcon, ArchiveBoxXMarkIcon, UserMinusIcon, UserPlusIcon } from '@heroicons/vue/20/solid'
 import User from "@/Pages/User.vue";
 
 defineProps({
@@ -54,7 +54,7 @@ defineProps({
                             Unsave Post
                         </Link>
                     </MenuItem>
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem v-if="$page.props.auth.user.id !== post.user.id" v-slot="{ active }">
                         <Link
                             preserve-scroll
                             method="POST"
@@ -70,7 +70,7 @@ defineProps({
                     </MenuItem>
                 </div>
                 <div class="px-1 py-1">
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem v-if="$page.props.auth.user.id !== post.user.id" v-slot="{ active }">
                         <Link
                             preserve-scroll
                             method="POST"
@@ -85,30 +85,23 @@ defineProps({
                             Hide All Posts
                         </Link>
                     </MenuItem>
-                    <MenuItem v-slot="{ active }">
-                        <button
-                            :class="[
+                    <MenuItem v-if="$page.props.auth.user.id !== post.user.id" v-slot="{ active }">
+                        <div>
+                            <Link preserve-scroll :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]"
-                        >
-
-                            Move
-                        </button>
-                    </MenuItem>
-                </div>
-
-                <div class="px-1 py-1">
-                    <MenuItem v-slot="{ active }">
-                        <button
-                            :class="[
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm gap-x-4',
+                ]" v-if="!post.is_following" method="POST" :href="route('users.follow', {user: `${post.user.username}`})">
+                                <user-plus-icon   class="w-6 h-6 text-slate-400"/>
+                                Follow
+                            </Link>
+                            <Link preserve-scroll method="DELETE" :href="route('users.unfollow', {user: `${post.user.username}`})" :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]"
-                        >
-
-                            Delete
-                        </button>
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm gap-x-4',
+                ]" v-else>
+                                <user-minus-icon  class="w-6 h-6 text-slate-400"/>
+                                UnFollow
+                            </Link>
+                        </div>
                     </MenuItem>
                 </div>
             </MenuItems>

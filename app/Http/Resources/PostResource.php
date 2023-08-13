@@ -54,6 +54,7 @@ class PostResource extends ResourceCollection
                 ],
                 'is_saved'=>$post->is_saved,
                 'saved_count'=>$post->saved_count,
+                'is_following'=>$post->is_following,
             ];
         });
     }

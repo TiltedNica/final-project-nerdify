@@ -55,9 +55,9 @@ Route::get('/google-auth/callback', function () {
     // $user->token
 });
 
-Route::get('/user', function () {
-    return Inertia::render('User');
-});
+//Route::get('/user', function () {
+//    return Inertia::render('User');
+//});
 
 
 

@@ -18,7 +18,7 @@ defineProps({
             </div>
             <div class="bg-white w-full pt-2 pr-6 pb-12 rounded-b-2xl shadow-xl">
                 <div class="border-4 border-white absolute top-[75px] left-5 rounded-full">
-                    <profile-picture h="86" w="86" :image="follow.image" ></profile-picture>
+                    <profile-picture :username="follow.username" h="86" w="86" :image="follow.image" ></profile-picture>
                 </div>
                 <div class="ms-[122px] flex">
                     <div class="flex flex-col gap-y-2 w-full">

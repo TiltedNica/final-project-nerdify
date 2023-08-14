@@ -1,6 +1,6 @@
 <script setup>
 import {Link, Head, usePage} from "@inertiajs/vue3";
-import MainNavLayout from "@/Layouts/MainNavLayout.vue";
+import MainNavLayout from "@/Layouts/MainLayout.vue";
 import CreatePostBox from "@/Components/CreatePostBox.vue";
 import Post from "@/Components/Post.vue";
 import LeftSidebar from "@/Components/LeftSidebar.vue";
@@ -13,12 +13,13 @@ import AboutUser from "@/Components/AboutUser.vue";
 import Photos from "@/Components/Photos.vue";
 import DropdownMenu from "@/Components/DropdownMenu.vue";
 import FollowButton from "@/Components/FollowButton.vue";
+import MainLayout from "@/Layouts/MainLayout.vue";
 
 const useGeneral = useGeneralStore()
 
 defineProps({
-    likes: String,
-    images: String,
+    likes: Number,
+    images: Number,
     isFollowing: Boolean,
     savedPosts: Object,
     posts: Object,
@@ -32,7 +33,7 @@ defineProps({
 
 <template>
     <Head title="User"></Head>
-    <MainNavLayout>
+    <MainLayout>
         <div class="flex h-full ">
             <left-sidebar></left-sidebar>
             <div class="bg-[#F1F1F5] w-full flex flex-col items-center py-8">
@@ -46,14 +47,13 @@ defineProps({
                         <Link v-if="$page.props.auth.user.id === user.id" :href="`/user/${user.username}/edit`"  class="absolute top-5 right-5 py-2.5 px-3.5 bg-[#17172580] rounded-2xl border-white border-2 text-white">Edit Profile</Link>
                         <profile-picture h="156" w="156" :username="user.username" :image="user.image"  class="absolute top-[138px] left-8"></profile-picture>
                     </div>
-                    <div class="bg-white w-full rounded-b-2xl">
-                        <div class="flex ms-[360px] items-center">
+                    <div class="bg-white w-full rounded-b-2xl pr-4">
+                        <div class="flex ms-[360px] items-center justify-between">
                             <banner-filter :amount="posts.data.length" title="Post"></banner-filter>
                             <banner-filter title="Followers" :amount="user.followers.length"></banner-filter>
                             <banner-filter title="Following" :amount="user.followings.length"></banner-filter>
                             <banner-filter :amount="likes" title="Likes"></banner-filter>
                             <banner-filter title="Photos" :amount="images"></banner-filter>
-                            <banner-filter title="Videos" amount="2"></banner-filter>
                             <banner-filter title="Saved" :amount="user.saved_posts.length"></banner-filter>
                             <follow-button :followed="isFollowing" :username="user.username" v-if="$page.props.auth.user.id !== user.id"/>
                         </div>
@@ -75,7 +75,7 @@ defineProps({
 
             </div>
         </div>
-    </MainNavLayout>
+    </MainLayout>
 </template>
 
 <style lang="scss" scoped>

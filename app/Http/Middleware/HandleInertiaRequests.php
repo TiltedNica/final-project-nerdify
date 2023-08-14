@@ -2,8 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use PHPUnit\Metadata\Uses;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
@@ -28,8 +31,15 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
+
     public function share(Request $request): array
     {
+
+        $unreadNotificationsCount = 0;
+        $authUser = $request->user();
+        if ($authUser) {
+            $unreadNotificationsCount = $authUser->unreadNotifications()->count();
+        }
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
@@ -39,7 +49,8 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'csrf_token'=>csrf_token()
+            'csrf_token'=>csrf_token(),
+            'unreadNotificationsCount'=> $unreadNotificationsCount
         ]);
     }
 }

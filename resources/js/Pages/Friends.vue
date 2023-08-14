@@ -1,6 +1,6 @@
 <script setup>
 
-import MainNavLayout from "@/Layouts/MainNavLayout.vue";
+import MainNavLayout from "@/Layouts/MainLayout.vue";
 import LeftSidebar from "@/Components/LeftSidebar.vue";
 import Post from "@/Components/Post.vue";
 import {Head} from "@inertiajs/vue3";
@@ -8,6 +8,7 @@ import CreatePostBox from "@/Components/CreatePostBox.vue";
 import ListBox from "@/Components/ListBox.vue";
 import FriendBox from "@/Components/FriendBox.vue";
 import {useGeneralStore} from "@/stores/general.js";
+import MainLayout from "@/Layouts/MainLayout.vue";
 
 const useGeneral = useGeneralStore()
 
@@ -20,7 +21,7 @@ const useGeneral = useGeneralStore()
 
 <template>
     <Head title="Friends"/>
-    <MainNavLayout>
+    <MainLayout>
         <div class="flex h-screen">
             <left-sidebar></left-sidebar>
             <div class="bg-[#F1F1F5] w-full flex flex-col items-center">
@@ -41,7 +42,7 @@ const useGeneral = useGeneralStore()
                 </div>
             </div>
         </div>
-    </MainNavLayout>
+    </MainLayout>
 </template>
 
 

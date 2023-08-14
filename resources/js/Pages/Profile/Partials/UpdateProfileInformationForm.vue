@@ -4,7 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage, router } from '@inertiajs/vue3';
-import MainNavLayout from "@/Layouts/MainNavLayout.vue";
+import MainNavLayout from "@/Layouts/MainLayout.vue";
 import LeftSidebar from "@/Components/LeftSidebar.vue";
 import {useGeneralStore} from "@/stores/general.js";
 

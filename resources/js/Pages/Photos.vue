@@ -2,10 +2,11 @@
 
 import LeftSidebar from "@/Components/LeftSidebar.vue";
 import ListBox from "@/Components/ListBox.vue";
-import MainNavLayout from "@/Layouts/MainNavLayout.vue";
+import MainNavLayout from "@/Layouts/MainLayout.vue";
 import {Head} from "@inertiajs/vue3";
 import PhotosListBox from "@/Components/PhotosListBox.vue";
 import {useGeneralStore} from "@/stores/general.js";
+import MainLayout from "@/Layouts/MainLayout.vue";
 
 const useGeneral = useGeneralStore()
 
@@ -18,7 +19,7 @@ defineProps({
 
 <template>
     <Head title="Photos"/>
-    <main-nav-layout>
+    <main-layout>
         <div class="flex h-screen">
             <left-sidebar/>
             <div class="bg-[#F1F1F5] w-full flex flex-col items-center px-48">
@@ -44,7 +45,7 @@ defineProps({
                 </div>
             </div>
         </div>
-    </main-nav-layout>
+    </main-layout>
 </template>
 
 

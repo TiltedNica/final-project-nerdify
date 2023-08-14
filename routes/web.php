@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedPostController;
@@ -88,6 +89,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{user:username}/followings', [FollowerController::class, 'index'])->name('users.followings');
     Route::post('/{user:username}/follow', [FollowerController::class, 'store'])->name('users.follow');
     Route::delete('/{user:username}/follow', [FollowerController::class, 'destroy'])->name('users.unfollow');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

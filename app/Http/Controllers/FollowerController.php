@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
+use App\Notifications\FollowerNotification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -40,6 +41,7 @@ class FollowerController extends Controller
     {
 
         $user->followers()->attach(auth()->user()->id);
+        $user->notify(new FollowerNotification(auth()->user()));
         return redirect()->back();
     }
 

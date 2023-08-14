@@ -75,13 +75,8 @@ const createLike = () => {
         )
     }
 
-
-
 }
 
-const isUser = () =>{
-    router.get('/user/' + user.value.id)
-}
 
 </script>
 <template>
@@ -134,7 +129,6 @@ const isUser = () =>{
             <profile-picture :username="user.username" w="36" h="36" :image="userAuth.image"></profile-picture>
             <form @submit.prevent="createComment" class="flex relative w-full">
                     <input v-model="form.comment" type="text" placeholder="Write Your Comment" class="bg-[#FAFAFB] placeholder-[#92929D] placeholder: leading-6 placeholder:text-[14px] border-none rounded-2xl w-full">
-                    <img class="absolute mt-2.5 right-2.5 cursor-pointer" src="/img/ic_Image.svg" alt="">
             </form>
         </div>
     </div>

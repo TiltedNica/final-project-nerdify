@@ -58,7 +58,7 @@ const resetScroll = () =>{
                 <h3>Post Something</h3>
                 <img class="cursor-pointer" @click="useGeneral.isPostOverlay=false; resetScroll()" src="/img/ic_Close.svg" alt="">
             </div>
-            <form @submit.prevent="handleSubmit" class="p-4 max-h-[600px] overflow-y-scroll">
+            <form  @submit.prevent="handleSubmit" class="p-4 max-h-[600px] overflow-y-scroll">
                 <div class="flex items-center border-b-2">
                     <profile-picture w="36" h="36" class="pointer-events-none" :image="user.image"></profile-picture>
                     <div class="w-full">

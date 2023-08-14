@@ -25,17 +25,6 @@ const isVideo = (filename) =>{
 
 const userAuth = usePage().props.auth.user
 
-const createComment = () =>{
-    router.post('/comment', {
-        post_id: props.post.id,
-        text: form.comment
-    },
-        {
-            preserveScroll: true
-        }
-    )
-}
-
 const isHeartActiveComputed = computed(() => {
     let isTrue = false
 
@@ -75,6 +64,17 @@ const createLike = () => {
         )
     }
 
+}
+
+const createPostComment = () => {
+    router.post('/comment', {
+            post_id: props.post.id,
+            text: form.comment
+        },
+        {
+            preserveScroll: true
+        }
+    )
 }
 
 
@@ -127,7 +127,7 @@ const createLike = () => {
         </div>
         <div class="flex items-center gap-x-2.5">
             <profile-picture :username="user.username" w="36" h="36" :image="userAuth.image"></profile-picture>
-            <form @submit.prevent="createComment" class="flex relative w-full">
+            <form @submit.prevent="createPostComment" class="flex relative w-full">
                     <input v-model="form.comment" type="text" placeholder="Write Your Comment" class="bg-[#FAFAFB] placeholder-[#92929D] placeholder: leading-6 placeholder:text-[14px] border-none rounded-2xl w-full">
             </form>
         </div>

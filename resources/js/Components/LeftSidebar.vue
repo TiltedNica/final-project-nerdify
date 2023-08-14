@@ -3,6 +3,7 @@
 import ProfilePicture from "@/Components/ProfilePicture.vue";
 import {Link, usePage} from "@inertiajs/vue3";
 import {useGeneralStore} from "@/stores/general.js";
+import { EyeSlashIcon } from '@heroicons/vue/20/solid'
 
 const useGeneral = useGeneralStore();
 const user = usePage().props.auth.user
@@ -40,6 +41,14 @@ const user = usePage().props.auth.user
                     <img v-if="$page.url.endsWith('/photos')" src="/img/ic_PhotosActive.svg" alt="">
                     <img v-else src="/img/ic_Photos.svg" alt="">
                     <h3 class="font-semibold text-[#171725]">Photos</h3>
+                </div>
+            </Link>
+            <Link :href="route('show-hidden-posts', {user: `${user.username}`})" class="flex py-1.5 gap-x-5">
+                <div v-if="$page.url.endsWith('/hidden-posts')" class="w-[3px] h-[32px] bg-[#0062FF] rounded-r-md"></div>
+                <div class="flex py-1.5 gap-x-5">
+                    <eye-slash-icon class="text-[#0062ff] h-[24px] w-[24px]" v-if="$page.url.endsWith('/hidden-posts')"/>
+                    <eye-slash-icon class="text-[#aeaeb6] h-[24px] w-[24px]" v-else/>
+                    <h3 class="font-semibold text-[#171725]">Hidden Posts</h3>
                 </div>
             </Link>
         </div>

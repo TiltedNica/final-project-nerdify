@@ -83,6 +83,22 @@ class UserController extends Controller
         return Inertia::render('Photos', ['postsDesc'=>$postsDesc, 'postsAsc'=>$postsAsc]);
     }
 
+
+    public function showHiddenPosts(string $username)
+    {
+        $user = User::where('username', $username)->firstOrFail();
+        $posts = $user->hiddenPosts()->with('images')->get();
+        $postsWithHidden = $posts->map(function ($post) use ($user) {
+            $post->is_hidden = $user->hiddenPosts->contains('id', $post->id);
+            return $post;
+        });
+
+
+        return Inertia::render('HiddenPosts', [
+            'user'=>$user,
+            'posts' => new PostResource($postsWithHidden)
+        ]);
+    }
     public function update(Request $request)
     {
         $request->validate(['image'=>'nullable|mimes:jpg,jpeg,png', 'banner_picture'=>'nullable|mimes:jpg,jpeg,png']);

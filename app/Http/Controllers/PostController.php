@@ -33,6 +33,7 @@ class PostController extends Controller
             $post->is_saved = $user->savedPosts->contains('id', $post->id);
             $post->saved_count = $post->usersWhoSaved->count();
             $post->is_following = $post->user->isFollowing(auth()->user());
+            $post->is_hidden = $user->hiddenPosts->contains('id', $post->id);
             return $post;
         });
 
@@ -75,6 +76,8 @@ class PostController extends Controller
         // Verificar si ya existe una entrada en la tabla hidden_posts
         if (!$user->hiddenPosts->contains('id', $post->id)) {
             $user->hiddenPosts()->attach($post);
+        } else {
+            $user->hiddenPosts()->detach($post);
         }
 
         return redirect()->back();
@@ -104,4 +107,6 @@ class PostController extends Controller
         }
         $post->delete();
     }
+
+
 }

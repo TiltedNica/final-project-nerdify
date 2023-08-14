@@ -50,7 +50,7 @@ Route::get('/google-auth/callback', function () {
 
     Auth::login($user);
 
-    return redirect('/');
+    return redirect(route('posts.index'));
 
 
     // $user->token
@@ -91,6 +91,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/{user:username}/follow', [FollowerController::class, 'destroy'])->name('users.unfollow');
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
+
+    Route::get('/user/{user:username}/hidden-posts', [UserController::class, 'showHiddenPosts'])->name('show-hidden-posts');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

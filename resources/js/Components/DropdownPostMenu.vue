@@ -2,7 +2,7 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import {Link} from "@inertiajs/vue3";
 
-import { BookmarkIcon, BookmarkSlashIcon, XCircleIcon, ArchiveBoxXMarkIcon, UserMinusIcon, UserPlusIcon } from '@heroicons/vue/20/solid'
+import { BookmarkIcon, BookmarkSlashIcon, XCircleIcon, ArchiveBoxXMarkIcon, UserMinusIcon, UserPlusIcon, ClipboardDocumentCheckIcon } from '@heroicons/vue/20/solid'
 import User from "@/Pages/User.vue";
 
 defineProps({
@@ -35,7 +35,7 @@ defineProps({
             >
                 <div class="px-1 py-1">
                     <MenuItem v-slot="{ active }">
-                        <Link preserve-scroll v-if="!post.is_saved" method="POST" :href="route('saved-post.store', {post: `${post.id}`})"
+                        <Link as="button" preserve-scroll v-if="!post.is_saved" method="POST" :href="route('saved-post.store', {post: `${post.id}`})"
                             :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
                   'group flex gap-x-4 w-full items-center rounded-md px-2 py-2 text-sm',
@@ -44,7 +44,7 @@ defineProps({
                             <bookmark-icon class="w-6 h-6 text-slate-400"/>
                             Save Post
                         </Link>
-                        <Link preserve-scroll v-else method="DELETE" :href="route('unsave-post.destroy', {post: `${post.id}`})"
+                        <Link as="button" preserve-scroll v-else method="DELETE" :href="route('unsave-post.destroy', {post: `${post.id}`})"
                               :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
                   'group flex w-full flex gap-x-4 items-center rounded-md px-2 py-2 text-sm',
@@ -54,8 +54,9 @@ defineProps({
                             Unsave Post
                         </Link>
                     </MenuItem>
-                    <MenuItem v-if="$page.props.auth.user.id !== post.user.id" v-slot="{ active }">
+                    <MenuItem v-if="$page.props.auth.user.id !== post.user.id && !post.is_hidden" v-slot="{ active }">
                         <Link
+                            as="button"
                             preserve-scroll
                             method="POST"
                             :href="route('post.hide', {post: `${post.id}`})"
@@ -68,10 +69,26 @@ defineProps({
                             Hide this Post
                         </Link>
                     </MenuItem>
+                    <MenuItem v-else v-slot="{ active }">
+                        <Link
+                            as="button"
+                            preserve-scroll
+                            method="POST"
+                            :href="route('post.hide', {post: `${post.id}`})"
+                            :class="[
+                  active ? 'bg-violet-500 text-white' : 'text-gray-900',
+                  'group flex w-full gap-x-4 items-center rounded-md px-2 py-2 text-sm',
+                ]"
+                        >
+                            <clipboard-document-check-icon class="w-6 h-6 text-slate-400"/>
+                            Show this Post
+                        </Link>
+                    </MenuItem>
                 </div>
                 <div class="px-1 py-1">
                     <MenuItem v-if="$page.props.auth.user.id !== post.user.id" v-slot="{ active }">
                         <Link
+                            as="button"
                             preserve-scroll
                             method="POST"
                             :href="route('post.hide-all-user-posts', {user: `${user.id}`})"
@@ -87,14 +104,14 @@ defineProps({
                     </MenuItem>
                     <MenuItem v-if="$page.props.auth.user.id !== post.user.id" v-slot="{ active }">
                         <div>
-                            <Link preserve-scroll :class="[
+                            <Link as="button" preserve-scroll :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm gap-x-4',
                 ]" v-if="!post.is_following" method="POST" :href="route('users.follow', {user: `${post.user.username}`})">
                                 <user-plus-icon   class="w-6 h-6 text-slate-400"/>
                                 Follow
                             </Link>
-                            <Link preserve-scroll method="DELETE" :href="route('users.unfollow', {user: `${post.user.username}`})" :class="[
+                            <Link as="button" preserve-scroll method="DELETE" :href="route('users.unfollow', {user: `${post.user.username}`})" :class="[
                   active ? 'bg-violet-500 text-white' : 'text-gray-900',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm gap-x-4',
                 ]" v-else>

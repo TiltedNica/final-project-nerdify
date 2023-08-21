@@ -3,7 +3,6 @@ import {toRefs, reactive, computed} from "vue";
 import {Link, router, usePage} from "@inertiajs/vue3";
 import {useGeneralStore} from "@/stores/general.js";
 import ProfilePicture from "@/Components/ProfilePicture.vue";
-import {c} from "../../../public/build/assets/app-3d4439b8.js";
 import DropdownPostMenu from "@/Components/DropdownPostMenu.vue";
 
 const form = reactive({
